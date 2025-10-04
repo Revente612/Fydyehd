@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fatality Client</title>
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-darker: #050505;
+            --bg-card: #111111;
+            --accent-purple: #8b2fc9;
+            --accent-purple-dark: #6a1e9c;
+            --accent-pink: #c92f8b;
+            --text-light: #f0f0f0;
+            --text-gray: #a0a0a0;
+            --border-color: #2a2a2a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--bg-darker);
+            padding: 15px 0;
+            border-bottom: 2px solid var(--accent-purple);
+            box-shadow: 0 4px 12px rgba(139, 47, 201, 0.2);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(139, 47, 201, 0.5);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background-color: var(--accent-purple);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-purple);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-purple-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 47, 201, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--accent-purple);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(139, 47, 201, 0.1);
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 40px 0;
+            min-height: calc(100vh - 160px);
+        }
+        
+        .section-title {
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 24px;
+            color: var(--text-light);
+        }
+        
+        /* Cards */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            color: var(--text-light);
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-gray);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: var(--bg-darker);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--text-light);
+            font-size: 16px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 2px rgba(139, 47, 201, 0.2);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            border-bottom: 2px solid var(--accent-purple);
+            color: var(--accent-purple);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--accent-purple);
+        }
+        
+        .file-upload input {
+            display: none;
+        }
+        
+        .file-upload-label {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--accent-purple);
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload-label:hover {
+            background-color: var(--accent-purple-dark);
+        }
+        
+        /* Posts Grid */
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .post-card {
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: var(--accent-purple);
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .post-content {
+            padding: 15px;
+        }
+        
+        .post-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+        
+        .post-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-bottom: 10px;
+        }
+        
+        .post-excerpt {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--bg-darker);
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-gray);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Fatality Client</h1>
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="active">Главная</a>
+                    <a href="#">Форум</a>
+                    <a href="#">Пасты</a>
+                    <a href="#">Файлы</a>
+                    <a href="#">О нас</a>
+                </div>
+                <div class="auth-buttons">
+                    <button class="btn btn-primary" id="loginBtn">Войти</button>
+                    <button class="btn btn-secondary" id="registerBtn">Регистрация</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="tabs">
+                <div class="tab active" data-tab="home">Главная</div>
+                <div class="tab" data-tab="paste">Создать пасту</div>
+                <div class="tab" data-tab="files">Файлы</div>
+            </div>
+
+            <div class="tab-content active" id="home-tab">
+                <h2 class="section-title">Последние пасты</h2>
+                <div class="posts-grid">
+                    <div class="post-card">
+                        <img src="https://via.placeholder.com/300x180/8b2fc9/ffffff?text=Fatality+Client" alt="Post Image" class="post-image">
+                        <div class="post-content">
+                            <h3 class="post-title">Мой первый клиент</h3>
+                            <div class="post-meta">
+                                <span>user123</span>
+                                <span>2 часа назад</span>
+                            </div>
+                            <p class="post-excerpt">Поделюсь своим первым опытом создания клиента для игры...</p>
+                        </div>
+                    </div>
+                    <div class="post-card">
+                        <img src="https://via.placeholder.com/300x180/6a1e9c/ffffff?text=Code+Snippet" alt="Post Image" class="post-image">
+                        <div class="post-content">
+                            <h3 class="post-title">Полезный код для оптимизации</h3>
+                            <div class="post-meta">
+                                <span>devPro</span>
+                                <span>5 часов назад</span>
+                            </div>
+                            <p class="post-excerpt">Нашел интересный способ оптимизации кода, делюсь с сообществом...</p>
+                        </div>
+                    </div>
+                    <div class="post-card">
+                        <img src="https://via.placeholder.com/300x180/c92f8b/ffffff?text=Tutorial" alt="Post Image" class="post-image">
+                        <div class="post-content">
+                            <h3 class="post-title">Как настроить окружение</h3>
+                            <div class="post-meta">
+                                <span>tutorMaster</span>
+                                <span>вчера</span>
+                            </div>
+                            <p class="post-excerpt">Подробное руководство по настройке рабочего окружения для разработки...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="paste-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Создать новую пасту</h2>
+                    </div>
+                    <form id="pasteForm">
+                        <div class="form-group">
+                            <label for="pasteTitle" class="form-label">Заголовок</label>
+                            <input type="text" id="pasteTitle" class="form-control" placeholder="Введите заголовок пасты">
+                        </div>
+                        <div class="form-group">
+                            <label for="pasteContent" class="form-label">Содержимое</label>
+                            <textarea id="pasteContent" class="form-control" placeholder="Введите текст пасты..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Прикрепить файлы</label>
+                            <div class="file-upload">
+                                <input type="file" id="fileInput" multiple>
+                                <label for="fileInput" class="file-upload-label">Выберите файлы</label>
+                                <p>или перетащите файлы сюда</p>
+                            </div>
+                            <div id="fileList"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Создать пасту</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="tab-content" id="files-tab">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Загруженные файлы</h2>
+                    </div>
+                    <div class="file-upload">
+                        <input type="file" id="filesInput" multiple>
+                        <label for="filesInput" class="file-upload-label">Загрузить файлы</label>
+                        <p>Максимальный размер файла: 50MB</p>
+                    </div>
+                    <div id="uploadedFiles">
+                        <p>Файлы еще не загружены</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 Fatality Client. Все права защищены.</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно регистрации -->
+    <div id="registerModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="card" style="width: 400px; max-width: 90%;">
+            <div class="card-header">
+                <h2 class="card-title">Регистрация</h2>
+                <span style="cursor: pointer;" id="closeRegisterModal">✕</span>
+            </div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="regUsername" class="form-label">Имя пользователя</label>
+                    <input type="text" id="regUsername" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail" class="form-label">Email</label>
+                    <input type="email" id="regEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword" class="form-label">Пароль</label>
+                    <input type="password" id="regPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regConfirmPassword" class="form-label">Подтвердите пароль</label>
+                    <input type="password" id="regConfirmPassword" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно входа -->
+    <div id="loginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="card" style="width: 400px; max-width: 90%;">
+            <div class="card-header">
+                <h2 class="card-title">Вход</h2>
+                <span style="cursor: pointer;" id="closeLoginModal">✕</span>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername" class="form-label">Имя пользователя или Email</label>
+                    <input type="text" id="loginUsername" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword" class="form-label">Пароль</label>
+                    <input type="password" id="loginPassword" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Табы
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Убираем активный класс у всех табов и контента
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Добавляем активный класс текущему табу
+                tab.classList.add('active');
+                
+                // Показываем соответствующий контент
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+
+        // Модальные окна
+        document.getElementById('registerBtn').addEventListener('click', () => {
+            document.getElementById('registerModal').style.display = 'flex';
+        });
+
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            document.getElementById('loginModal').style.display = 'flex';
+        });
+
+        document.getElementById('closeRegisterModal').addEventListener('click', () => {
+            document.getElementById('registerModal').style.display = 'none';
+        });
+
+        document.getElementById('closeLoginModal').addEventListener('click', () => {
+            document.getElementById('loginModal').style.display = 'none';
+        });
+
+        // Закрытие модальных окон при клике вне их
+        window.addEventListener('click', (e) => {
+            if (e.target === document.getElementById('registerModal')) {
+                document.getElementById('registerModal').style.display = 'none';
+            }
+            if (e.target === document.getElementById('loginModal')) {
+                document.getElementById('loginModal').style.display = 'none';
+            }
+        });
+
+        // Обработка форм
+        document.getElementById('registerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Регистрация успешно завершена!');
+            document.getElementById('registerModal').style.display = 'none';
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Вход выполнен успешно!');
+            document.getElementById('loginModal').style.display = 'none';
+        });
+
+        document.getElementById('pasteForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Паста успешно создана!');
+            document.getElementById('pasteForm').reset();
+            document.getElementById('fileList').innerHTML = '';
+        });
+
+        // Обработка загрузки файлов
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const files = e.target.files;
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            
+            if (files.length > 0) {
+                const list = document.createElement('ul');
+                list.style.marginTop = '10px';
+                
+                for (let i = 0; i < files.length; i++) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = files[i].name;
+                    list.appendChild(listItem);
+                }
+                
+                fileList.appendChild(list);
+            }
+        });
+
+        // Drag and drop для загрузки файлов
+        const fileUploads = document.querySelectorAll('.file-upload');
+        
+        fileUploads.forEach(upload => {
+            upload.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                upload.style.borderColor = 'var(--accent-purple)';
+                upload.style.backgroundColor = 'rgba(139, 47, 201, 0.1)';
+            });
+            
+            upload.addEventListener('dragleave', () => {
+                upload.style.borderColor = 'var(--border-color)';
+                upload.style.backgroundColor = 'transparent';
+            });
+            
+            upload.addEventListener('drop', (e) => {
+                e.preventDefault();
+                upload.style.borderColor = 'var(--border-color)';
+                upload.style.backgroundColor = 'transparent';
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    // В реальном приложении здесь была бы загрузка файлов
+                    alert(`Файлы добавлены: ${files.length}`);
+                }
+            });
+        });
+    </script>
+</body>
+  </html>
